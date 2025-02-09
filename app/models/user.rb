@@ -6,4 +6,6 @@ class User < ApplicationRecord
   validates :phone, presence: true
 
   scope :active, -> { where(status: "active") }
+
+  has_many :tasks, dependent: :destroy
 end
