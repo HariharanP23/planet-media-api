@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_user
+
   def create
     @user = User.new(user_params)
     @user.status = "active"
@@ -8,10 +10,10 @@ class UsersController < ApplicationController
         user: UserSerializer.new(@user)
       }, status: :created
     else
-      render_error @user.errors.full_messages, :unprocessable_entity
+      render_error @user.errors.full_messages, 422
     end
   rescue ActiveRecord::RecordInvalid => e
-    render_error e.record.errors.full_messages, :unprocessable_entity
+    render_error e.record.errors.full_messages, 422
   end
 
 private
